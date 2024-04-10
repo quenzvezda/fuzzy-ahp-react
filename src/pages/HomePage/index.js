@@ -1,20 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout } from 'antd';
 import AppHeader from '../../components/Header';
-import AppFooter from '../../components/Footer';
 import HomePageContent from './HomePageContent';
+import AppSideMenu from '../../components/SideMenu';
 
-const { Content } = Layout;
+const { Content, Sider } = Layout;
 
 const HomePage = () => {
+    const [collapsed, setCollapsed] = useState(true);
+
+    const toggleCollapsed = () => {
+        setCollapsed(!collapsed);
+    };
+
     return (
         <Layout className="min-h-screen">
+            <AppHeader collapsed={collapsed} toggle={toggleCollapsed} />
             <Layout>
-                <AppHeader />
+                <Sider
+                    width={200}
+                    collapsible
+                    collapsed={collapsed}
+                    onCollapse={setCollapsed}
+                    className="min-h-screen border-r-0 lg:block hidden"
+                >
+                    <AppSideMenu />
+                </Sider>
                 <Content className="mt-6 mx-4">
                     <HomePageContent />
                 </Content>
-                <AppFooter />
             </Layout>
         </Layout>
     );
