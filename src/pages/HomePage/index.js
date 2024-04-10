@@ -8,7 +8,7 @@ const { Content, Sider } = Layout;
 
 const HomePage = () => {
     const [collapsed, setCollapsed] = useState(true);
-    const [open, setOpen] = useState(false); // Mengganti visible dengan open
+    const [open, setOpen] = useState(false);
 
     const toggleCollapsed = () => {
         setCollapsed(!collapsed);
