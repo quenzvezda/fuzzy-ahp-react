@@ -1,21 +1,8 @@
 import React from 'react';
 import { Menu } from 'antd';
-import { HomeOutlined, SettingOutlined } from '@ant-design/icons';
+import menuItems from './menuItems';
 
 const AppSideMenu = () => {
-    const menuItems = [
-        {
-            key: '1',
-            icon: <HomeOutlined />,
-            label: 'Home',
-        },
-        {
-            key: '2',
-            icon: <SettingOutlined />,
-            label: 'Settings',
-        },
-    ];
-
     return (
         <Menu
             mode="inline"
