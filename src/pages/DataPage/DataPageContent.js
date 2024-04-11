@@ -43,7 +43,7 @@ const DataPageContent = () => {
 
     return (
         <div className="mt-4">
-            <Table columns={columns} dataSource={fileData} rowKey="name" />
+            <Table columns={columns} dataSource={fileData} rowKey="name" scroll={{ x: 'max-content' }} />
         </div>
     );
 };
