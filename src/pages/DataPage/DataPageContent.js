@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {Table, Button} from 'antd';
-import { fetchData } from '../../services/dataService';
+import {Table, Button, message, Modal} from 'antd';
+import { fetchData, deleteFile } from '../../services/dataService';
 import {UploadOutlined} from "@ant-design/icons";
 import UploadModal from "../../components/UploadModal";
 import { dataColumns } from './dataColumns';
@@ -24,8 +24,32 @@ const DataPageContent = () => {
         });
     }, []);
 
+    const handleDelete = async (filename) => {
+        try {
+            await deleteFile(filename);
+            message.success('File deleted successfully');
+            await loadData();
+        } catch (error) {
+            message.error('Failed to delete file');
+            console.error('Error deleting file:', error);
+        }
+    };
+
+    const showDeleteConfirm = (filename) => {
+        Modal.confirm({
+            title: 'Are you sure delete this file?',
+            content: `Filename: ${filename}`,
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                handleDelete(filename);
+            },
+        });
+    };
+
     return (
-        <div className="mt-4">
+        <div className="mt-0">
             <div className="flex justify-between items-center mb-4">
                 <span className="text-lg font-semibold">Files:</span>
                 <Button
@@ -35,7 +59,13 @@ const DataPageContent = () => {
                     Upload
                 </Button>
             </div>
-            <Table columns={dataColumns} dataSource={fileData} rowKey="name" scroll={{x: 'max-content'}}/>
+            <Table
+                columns={dataColumns(showDeleteConfirm)}
+                dataSource={fileData}
+                rowKey="name"
+                scroll={{x: 'max-content'}}
+                pagination={{ pageSize: 10}}
+            />
             <UploadModal
                 visible={uploadModalVisible}
                 onClose={() => setUploadModalVisible(false)}

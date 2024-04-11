@@ -8,3 +8,12 @@ export const fetchData = async () => {
         throw error;
     }
 };
+
+export const deleteFile = async (filename) => {
+    try {
+        const response = await axiosInstance.delete(`/data/${filename}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
