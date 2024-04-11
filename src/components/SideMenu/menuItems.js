@@ -1,16 +1,17 @@
 import { HomeOutlined, DatabaseOutlined } from '@ant-design/icons';
 import { MenuItemType } from 'antd/lib/menu/hooks/useItems';
+import { Link } from 'react-router-dom';
 
 const menuItems: MenuItemType[] = [
     {
-        key: '1',
+        key: '/',
         icon: <HomeOutlined />,
-        label: 'Home',
+        label: <Link to="/">Home</Link>,
     },
     {
-        key: '2',
+        key: '/data',
         icon: <DatabaseOutlined />,
-        label: 'Data Product',
+        label: <Link to="/data">Data Product</Link>,
     },
 ];
 
