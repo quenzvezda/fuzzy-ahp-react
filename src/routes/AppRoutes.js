@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PublicRoute from './PublicRoute';
 import HomePage from '../pages/HomePage';
 import DataPage from "../pages/DataPage";
+import ShowDataPage from "../pages/ShowDataPage";
 
 const AppRoutes = () => {
     return (
@@ -12,6 +13,7 @@ const AppRoutes = () => {
                 <Route element={<PublicRoute />}>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/data" element={<DataPage />} />
+                    <Route path="/show-data" element={<ShowDataPage />} />
                 </Route>
                 {/* Uncomment this when you have a LoginPage and isAuthenticated function */}
                 {/* <Route element={<PrivateRoute />}>
