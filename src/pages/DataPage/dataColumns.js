@@ -1,5 +1,6 @@
 import {Button} from "antd";
-import {DeleteOutlined} from "@ant-design/icons";
+import {DeleteOutlined, EyeOutlined} from "@ant-design/icons";
+import {Link} from "react-router-dom";
 
 const formatFileSize = (sizeInBytes) => {
     const units = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -40,11 +41,13 @@ export const dataColumns = (showDeleteConfirm) => [
         title: 'Action',
         key: 'action',
         render: (text, record) => (
-            <Button
-                danger
-                icon={<DeleteOutlined />}
-                onClick={() => showDeleteConfirm(record.name + record.extension)}
-            />
+            <>
+                <Button danger icon={<DeleteOutlined />} onClick={() => showDeleteConfirm(record.name + record.extension)} />
+                <Link to={`/show-data?filename=${record.name + record.extension}`}>
+                    <Button icon={<EyeOutlined />} style={{ marginLeft: 8 }} />
+                </Link>
+            </>
         ),
     },
+
 ];

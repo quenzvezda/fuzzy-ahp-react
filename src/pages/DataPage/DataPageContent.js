@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Table, Button, message, Modal} from 'antd';
+import {Table, Button, message, Modal, Spin} from 'antd';
 import { fetchData, deleteFile } from '../../services/dataService';
 import {UploadOutlined} from "@ant-design/icons";
 import UploadModal from "../../components/UploadModal";
@@ -8,13 +8,17 @@ import { dataColumns } from './dataColumns';
 const DataPageContent = () => {
     const [fileData, setFileData] = useState([]);
     const [uploadModalVisible, setUploadModalVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const loadData = async () => {
+        setLoading(true);
         try {
             const data = await fetchData();
             setFileData(data);
+            setLoading(false);
         } catch (error) {
             console.error('Error fetching data:', error);
+            setLoading(false);
         }
     };
 
@@ -59,13 +63,14 @@ const DataPageContent = () => {
                     Upload
                 </Button>
             </div>
+            { loading ? <Spin size="large" className="flex justify-center items-center h-64" /> :
             <Table
                 columns={dataColumns(showDeleteConfirm)}
                 dataSource={fileData}
                 rowKey="name"
                 scroll={{x: 'max-content'}}
                 pagination={{ pageSize: 10}}
-            />
+            /> }
             <UploadModal
                 visible={uploadModalVisible}
                 onClose={() => setUploadModalVisible(false)}

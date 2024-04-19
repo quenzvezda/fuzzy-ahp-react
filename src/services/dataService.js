@@ -17,3 +17,12 @@ export const deleteFile = async (filename) => {
         throw error;
     }
 };
+
+export const fetchDataFromFile = async (filename, page, perPage) => {
+    try {
+        const response = await axiosInstance.get(`/data-show?filename=${filename}&page=${page}&per_page=${perPage}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
