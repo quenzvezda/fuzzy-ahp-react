@@ -1,14 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { Table, message, Spin } from 'antd';
+import { useLocation } from 'react-router-dom';
 import { fetchDataFromFile } from '../../services/dataService';
+import SelectFileModal from '../../components/Popup/selectFile';
 
-const ShowDataContent = ({ filename }) => {
+const ShowDataContent = () => {
+    const [filename, setFilename] = useState(null);
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [columns, setColumns] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalRecords, setTotalRecords] = useState(0);
     const [perPage, setPerPage] = useState(10);
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const location = useLocation();
+    const query = new URLSearchParams(location.search);
+
+    useEffect(() => {
+        const fileParam = query.get('filename');
+        if (fileParam) {
+            setFilename(fileParam);
+        } else {
+            setModalVisible(true);
+        }
+    }, [location]);
 
     useEffect(() => {
         if (filename) {
@@ -39,6 +55,15 @@ const ShowDataContent = ({ filename }) => {
         }
     };
 
+    const handleFileSelect = (selectedFile) => {
+        setFilename(selectedFile.name);
+        setModalVisible(false);
+    };
+
+    const handleCloseModal = () => {
+        setModalVisible(false);
+    };
+
     return (
         <div>
             {loading ? <Spin size="large" className="flex justify-center items-center h-64"/> :
@@ -46,7 +71,7 @@ const ShowDataContent = ({ filename }) => {
                     columns={columns}
                     dataSource={data}
                     pagination={{
-                        showQuickJumper : true,
+                        showQuickJumper: true,
                         current: currentPage,
                         pageSize: perPage,
                         total: totalRecords,
@@ -54,13 +79,16 @@ const ShowDataContent = ({ filename }) => {
                             setCurrentPage(page);
                             setPerPage(pageSize);
                         },
-
                         showSizeChanger: true,
                         onShowSizeChange: (current, size) => setPerPage(size)
                     }}
-                    // rowKey={record => `${record.Rating}-${record.Price}-${record.Response_Chat}`}
                     rowKey={(record, index) => index + currentPage * perPage - perPage}
                 />}
+            <SelectFileModal
+                isVisible={modalVisible}
+                onSelect={handleFileSelect}
+                onCancel={handleCloseModal}
+            />
         </div>
     );
 };
