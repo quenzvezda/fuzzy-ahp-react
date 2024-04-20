@@ -17,8 +17,6 @@ const ShowDataPage = () => {
     const [collapsed, setCollapsed] = useState(true);
     const [open, setOpen] = useState(false);
 
-    console.log("ShowDataPage Render", { collapsed, open });
-
     const toggleCollapsed = () => {
         console.log("toggleCollapsed called");
         setCollapsed(!collapsed);

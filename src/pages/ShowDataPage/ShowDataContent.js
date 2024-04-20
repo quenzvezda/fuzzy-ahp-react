@@ -46,6 +46,7 @@ const ShowDataContent = ({ filename }) => {
                     columns={columns}
                     dataSource={data}
                     pagination={{
+                        showQuickJumper : true,
                         current: currentPage,
                         pageSize: perPage,
                         total: totalRecords,
@@ -53,10 +54,12 @@ const ShowDataContent = ({ filename }) => {
                             setCurrentPage(page);
                             setPerPage(pageSize);
                         },
+
                         showSizeChanger: true,
                         onShowSizeChange: (current, size) => setPerPage(size)
                     }}
-                    rowKey={record => `${record.Rating}-${record.Price}-${record.Response_Chat}`}
+                    // rowKey={record => `${record.Rating}-${record.Price}-${record.Response_Chat}`}
+                    rowKey={(record, index) => index + currentPage * perPage - perPage}
                 />}
         </div>
     );
