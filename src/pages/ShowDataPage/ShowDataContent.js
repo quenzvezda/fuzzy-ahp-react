@@ -76,6 +76,7 @@ const ShowDataContent = () => {
                 <Table
                     columns={columns}
                     dataSource={data}
+                    scroll={{x: 'max-content'}}
                     pagination={{
                         showQuickJumper: true,
                         current: currentPage,
