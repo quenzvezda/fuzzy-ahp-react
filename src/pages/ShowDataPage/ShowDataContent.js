@@ -42,19 +42,22 @@ const ShowDataContent = ({ filename }) => {
     return (
         <div>
             {loading ? <Spin size="large" className="flex justify-center items-center h-64"/> :
-                <Table columns={columns} dataSource={data} pagination={{
-                    current: currentPage,
-                    total: totalRecords,
-                    pageSize: perPage,
-                    onChange: (page, pageSize) => {
-                        setCurrentPage(page);
-                        setPerPage(pageSize);
-                    },
-                    showSizeChanger: true,
-                    onShowSizeChange: (current, size) => {
-                        setPerPage(size);
-                    }
-                }} rowKey="Alternative" />}
+                <Table
+                    columns={columns}
+                    dataSource={data}
+                    pagination={{
+                        current: currentPage,
+                        pageSize: perPage,
+                        total: totalRecords,
+                        onChange: (page, pageSize) => {
+                            setCurrentPage(page);
+                            setPerPage(pageSize);
+                        },
+                        showSizeChanger: true,
+                        onShowSizeChange: (current, size) => setPerPage(size)
+                    }}
+                    rowKey={record => `${record.Rating}-${record.Price}-${record.Response_Chat}`}
+                />}
         </div>
     );
 };
