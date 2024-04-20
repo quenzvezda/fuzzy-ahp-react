@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, List, Button } from 'antd';
+import { Modal, List, Button, Spin } from 'antd';
 import { fetchData } from '../../services/dataService';
 
 const FileSelectorModal = ({ isVisible, onSelect, onCancel }) => {
     const [files, setFiles] = useState([]);
+    const [loading, setLoading] = useState(false);  // State untuk menangani loading
 
     useEffect(() => {
         if (isVisible) {
@@ -12,11 +13,14 @@ const FileSelectorModal = ({ isVisible, onSelect, onCancel }) => {
     }, [isVisible]);
 
     const loadFiles = async () => {
+        setLoading(true);  // Mulai loading
         try {
             const data = await fetchData();
             setFiles(data);
+            setLoading(false);  // Hentikan loading setelah data di-fetch
         } catch (error) {
             console.error('Failed to fetch files:', error);
+            setLoading(false);  // Pastikan loading dihentikan jika ada error
         }
     };
 
@@ -27,19 +31,23 @@ const FileSelectorModal = ({ isVisible, onSelect, onCancel }) => {
             onCancel={onCancel}
             footer={null}
         >
-            <List
-                itemLayout="horizontal"
-                dataSource={files}
-                renderItem={item => (
-                    <List.Item
-                        actions={[<Button key="select" onClick={() => onSelect(item)}>Select</Button>]}
-                    >
-                        <List.Item.Meta
-                            title={item.name}
-                        />
-                    </List.Item>
-                )}
-            />
+            {loading ? (
+                <Spin size="large" className="flex justify-center items-center h-64" />
+            ) : (
+                <List
+                    itemLayout="horizontal"
+                    dataSource={files}
+                    renderItem={item => (
+                        <List.Item
+                            actions={[<Button key="select" onClick={() => onSelect(item)}>Select</Button>]}
+                        >
+                            <List.Item.Meta
+                                title={`${item.name}${item.extension}`}  // Jangan lupa untuk menyertakan ekstensi file
+                            />
+                        </List.Item>
+                    )}
+                />
+            )}
         </Modal>
     );
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, message, Spin } from 'antd';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom'; // Impor useNavigate
 import { fetchDataFromFile } from '../../services/dataService';
 import SelectFileModal from '../../components/Popup/selectFile';
 
@@ -16,6 +16,7 @@ const ShowDataContent = () => {
 
     const location = useLocation();
     const query = new URLSearchParams(location.search);
+    const navigate = useNavigate();  // Inisialisasi useNavigate
 
     useEffect(() => {
         const fileParam = query.get('filename');
@@ -56,12 +57,17 @@ const ShowDataContent = () => {
     };
 
     const handleFileSelect = (selectedFile) => {
-        setFilename(selectedFile.name);
+        const fullName = `${selectedFile.name}${selectedFile.extension}`;
+        setFilename(fullName);
+        navigate(`/show-data?filename=${fullName}`);  // Navigasi dengan filename yang baru
         setModalVisible(false);
     };
 
     const handleCloseModal = () => {
         setModalVisible(false);
+        if (!filename) {
+            navigate('/');  // Jika tidak ada file yang dipilih, kembali ke beranda atau halaman lain
+        }
     };
 
     return (
