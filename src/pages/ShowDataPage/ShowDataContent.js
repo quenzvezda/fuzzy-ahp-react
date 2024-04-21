@@ -13,6 +13,7 @@ const ShowDataContent = () => {
     const [totalRecords, setTotalRecords] = useState(0);
     const [perPage, setPerPage] = useState(10);
     const [modalVisible, setModalVisible] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
     const location = useLocation();
     const query = new URLSearchParams(location.search);
@@ -32,6 +33,14 @@ const ShowDataContent = () => {
             loadData(filename, currentPage, perPage);
         }
     }, [filename, currentPage, perPage]);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const loadData = async (filename, page, perPage) => {
         setLoading(true);
@@ -76,7 +85,7 @@ const ShowDataContent = () => {
                 <Table
                     columns={columns}
                     dataSource={data}
-                    scroll={{x: 'max-content'}}
+                    scroll={isMobile ? { x: 'max-content' } : {}}
                     pagination={{
                         showQuickJumper: true,
                         current: currentPage,
